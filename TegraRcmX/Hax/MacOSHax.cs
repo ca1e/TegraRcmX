@@ -1,4 +1,4 @@
-﻿using LibUsbDotNet;
+using LibUsbDotNet;
 using LibUsbDotNet.LibUsb;
 using LibUsbDotNet.Main;
 using System;
@@ -64,10 +64,18 @@ namespace TegramRcmX.Hax
                 Length = (short)length
             };
 
-            var buffer = new byte[length];
-            var result = device.ControlTransfer(setup, buffer, 0, buffer.Length);
+            try
+            {
+                var buffer = new byte[length];
+                var result = device.ControlTransfer(setup, buffer, 0, buffer.Length);
 
-            return result != length;
+                return true;
+            }
+            catch
+            {
+                // which mean we smash success.
+                return false;
+            }
         }
 
         public void Close()
