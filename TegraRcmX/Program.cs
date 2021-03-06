@@ -28,7 +28,8 @@ namespace TegramRcmX
 
             Console.WriteLine("Writing payload...");
 
-            var path = @"D:\repositories\rcmlaucher\hekate_ctcaer_5.5.4.bin";
+            // var path = @"D:\repositories\rcmlaucher\hekate_ctcaer_5.5.4.bin";
+            var path = args[0];
             device.SendPayload(path);
 
             Console.WriteLine("Smashing...");
