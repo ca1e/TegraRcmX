@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -37,6 +37,7 @@ namespace TegramRcmX
 
         private static readonly uint PAYLOAD_MAX_SIZE = 0x1ED58;
         private static readonly uint PACKAGE_SIZE = 0x1000;
+        private static readonly uint CND_HEADER_SIZE = 0x2a8;
         private static readonly uint PAYLOAD_TOTAL_MAX_SIZE = 0x30000;
 
         private static readonly uint RCM_PAYLOAD_ADDR = 0x40010000; // The address where the RCM payload is placed
@@ -59,7 +60,7 @@ namespace TegramRcmX
                 // Use the maximum length accepted by RCM, so we can transmit as much payload as we want.
                 // We'll take over before we get to the end.
                 wrt.Write(length);
-                var pos = 0x2a8;
+                var pos = CND_HEADER_SIZE;
                 mem.Position = 680;
                 // Populate from [RCM_PAYLOAD_ADDR, INTERMEZZO_LOCATION) with the payload address.
                 for (var i = 0; i < 0x3c00; i++)
@@ -166,8 +167,10 @@ namespace TegramRcmX
             SwitchToHighBuffer();
 
             var length = RCM_PAYLOAD_ADDR - 0x40009000;
+
+            // Console.WriteLine($"length: {length}, equal 28672?");
             // Smashing the stack!
-            return backend.TriggerVulnerability((int)length);
+            return backend.TriggerVulnerability();
         }
     }
 
